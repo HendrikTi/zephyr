@@ -23,6 +23,7 @@
 		zephyr,flash = &flash0;
 		zephyr,code-partition = &slot0_partition;
 		zephyr,bt-hci = &esp32_bt_hci;
+		zephyr,display = &waveshare_ed2208;
 	};
 
 	aliases {
@@ -76,6 +77,25 @@
 		buzzer0: pwmled_0 {
 			pwms = <&ledc0 0 PWM_HZ(50) PWM_POLARITY_NORMAL>;
 			label = "Buzzer";
+		};
+	};
+	mipi_dbi_epd {
+		compatible = "zephyr,mipi-dbi-spi";
+		spi-dev = <&spi2>;
+		dc-gpios = <&gpio0 11 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&gpio0 12 GPIO_ACTIVE_LOW>;
+		write-only;
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		waveshare_ed2208: ed2208@0 {
+			compatible = "waveshare,ed2208";
+			mipi-max-frequency = <4000000>;
+			reg = <0>;
+			width = <800>;
+			height = <480>;
+			busy-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+
 		};
 	};
 };

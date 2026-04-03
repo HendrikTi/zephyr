@@ -1,0 +1,12 @@
+# ED2208 display controller configuration options
+
+# Copyright (c) 2026 Hendrik Timmermann
+# SPDX-License-Identifier: Apache-2.0
+
+config ED2208
+	bool "Waveshare ED2208 compatible display controller driver"
+	default y
+	depends on DT_HAS_WAVESHARE_ED2208_ENABLED
+	select MIPI_DBI
+	help
+	  Enable driver for ED2208 compatible controller.
