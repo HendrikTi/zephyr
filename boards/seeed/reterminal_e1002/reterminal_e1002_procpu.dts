@@ -145,6 +145,14 @@
 	pinctrl-names = "default";
 };
 
+&spi2 {
+	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+	pinctrl-0 = <&mspi2_default>;
+	pinctrl-names = "default";
+};
+
 &ledc0 {
 	status = "okay";
 	#address-cells = <1>;

@@ -1,7 +1,7 @@
 # Copyright (c) 2021 Nordic Semiconductor ASA
 # SPDX-License-Identifier: Apache-2.0
 
-description: Dummy display controller
+description: Waveshare ED2208 800x480 color e-paper display controller
 
 compatible: "waveshare,ed2208"
 
