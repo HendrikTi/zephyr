@@ -456,13 +456,21 @@ typedef int (*display_set_pixel_format_api)(const struct device *dev,
 					    const enum display_pixel_format
 					    pixel_format);
 
-/**
+/**  
  * @brief Callback API to set orientation used by the display.
  * See display_set_orientation() for argument description
  */
 typedef int (*display_set_orientation_api)(const struct device *dev,
-					   const enum display_orientation
-					   orientation);
+                                          const enum display_orientation
+                                          orientation);
+
+/**
+ * @brief Callback API to get the color palette for indexed pixel formats.
+ * See display_get_palette() for argument description
+ */
+typedef int (*display_get_palette_api)(const struct device *dev,
+				       uint32_t *palette,
+				       size_t num_colors);
 
 /**
  * @brief Callback API to register display event callback.
@@ -527,6 +535,10 @@ __subsystem struct display_driver_api {
 	 * @driver_ops_optional @copybrief display_set_orientation
 	 */
 	display_set_orientation_api set_orientation;
+	/**
+	 * @driver_ops_optional @copybrief display_get_palette
+	 */
+	display_get_palette_api get_palette;
 	/**
 	 * @driver_ops_optional @copybrief display_register_event_cb
 	 */
@@ -779,6 +791,36 @@ static inline int display_set_orientation(const struct device *dev,
 	}
 
 	return api->set_orientation(dev, orientation);
+}
+
+/**
+ * @brief Get the color palette for indexed pixel formats
+ *
+ * Returns the display's color palette as an array of ARGB8888 values.
+ * Each entry maps a palette index to its corresponding color.
+ * This is used by graphics libraries to know what colors are available
+ * when rendering to displays using indexed pixel formats such as
+ * @ref PIXEL_FORMAT_I_4.
+ *
+ * @param dev Pointer to device structure
+ * @param palette Pointer to array to fill with ARGB8888 color values
+ * @param num_colors Number of palette entries to retrieve
+ *
+ * @return 0 on success else negative errno code.
+ * @retval -ENOSYS if not implemented.
+ */
+static inline int display_get_palette(const struct device *dev,
+				      uint32_t *palette,
+				      size_t num_colors)
+{
+	struct display_driver_api *api =
+		(struct display_driver_api *)dev->api;
+
+	if (api->get_palette == NULL) {
+		return -ENOSYS;
+	}
+
+	return api->get_palette(dev, palette, num_colors);
 }
 
 /**

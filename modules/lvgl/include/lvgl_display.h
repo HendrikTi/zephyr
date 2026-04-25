@@ -29,6 +29,7 @@ struct lvgl_display_flush {
 	void *buf;
 };
 
+void lvgl_flush_cb_indexed(lv_display_t *display, const lv_area_t *area, uint8_t *px_map);
 void lvgl_flush_cb_mono(lv_display_t *display, const lv_area_t *area, uint8_t *px_map);
 void lvgl_flush_cb_8bit(lv_display_t *display, const lv_area_t *area, uint8_t *px_map);
 void lvgl_flush_cb_16bit(lv_display_t *display, const lv_area_t *area, uint8_t *px_map);

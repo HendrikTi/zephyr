@@ -188,6 +188,9 @@ static int lvgl_allocate_rendering_buffers(lv_display_t *display)
 		buf_size = buf_nbr_pixels / 8 + 8;
 		buf_size += (buf_nbr_pixels % 8) == 0 ? 0 : 1;
 		break;
+	case PIXEL_FORMAT_I4:
+		buf_size = 2 * buf_nbr_pixels;
+		break;
 	default:
 		return -ENOTSUP;
 	}
@@ -368,8 +371,8 @@ int lvgl_init(void)
 		if (err < 0) {
 			return err;
 		}
-#endif
-
+#endif		
+	
 #ifdef CONFIG_LV_Z_FULL_REFRESH
 		lv_display_set_render_mode(lv_displays[i], LV_DISPLAY_RENDER_MODE_FULL);
 #endif

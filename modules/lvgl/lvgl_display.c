@@ -115,6 +115,12 @@ int set_lvgl_rendering_cb(lv_display_t *display)
 		lv_display_add_event_cb(display, lvgl_rounder_cb_mono, LV_EVENT_INVALIDATE_AREA,
 					display);
 		break;
+	case PIXEL_FORMAT_I_4:
+		lv_display_set_color_format(display, LV_COLOR_FORMAT_RGB565);
+		lv_display_set_flush_cb(display, lvgl_flush_cb_indexed);
+		lv_display_add_event_cb(display, lvgl_rounder_cb, LV_EVENT_INVALIDATE_AREA,
+					display);
+		break;
 	default:
 		lv_display_set_flush_cb(display, NULL);
 		lv_display_add_event_cb(display, lvgl_rounder_cb, LV_EVENT_INVALIDATE_AREA,
@@ -148,3 +154,8 @@ void lvgl_flush_display(struct lvgl_display_flush *request)
 	lv_display_flush_ready(request->display);
 #endif
 }
+
+
+#include <zephyr/logging/log.h>
+LOG_MODULE_DECLARE(lvgl, CONFIG_LV_Z_LOG_LEVEL);
+
